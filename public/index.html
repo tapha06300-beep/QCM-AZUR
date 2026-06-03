@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QCM Azure — Évaluation finale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A1628;--blue:#0078D4;--blue-dk:#005a9e;--blue-lt:#e6f1fb;--blue-xlt:#f0f8ff;
+  --teal:#00B4D8;--teal-lt:#e0f7fc;
+  --success:#10B981;--danger:#EF4444;--warn:#F59E0B;
+  --bg:#F4F6FA;--surface:#ffffff;--surface2:#F8FAFC;
+  --border:#E2E8F0;--border2:#CBD5E1;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:10px;--r-lg:14px;--shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+}
+html{background:var(--bg);font-family:var(--font);color:var(--text);font-size:15px;line-height:1.6}
+.hidden{display:none!important}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--navy);height:52px;display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.topbar-dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.topbar-name{font-size:14px;font-weight:500;color:#fff;letter-spacing:.01em}
+.topbar-tabs{display:flex;gap:2px;margin-left:auto}
+.topbar-tab{padding:6px 16px;border-radius:6px;font-size:13px;color:rgba(255,255,255,.55);cursor:pointer;border:none;background:transparent;transition:all .15s}
+.topbar-tab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.topbar-tab.active{color:#fff;background:rgba(0,120,212,.5)}
+.main{flex:1;padding:32px 24px;max-width:880px;margin:0 auto;width:100%}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow)}
+.card-sm{padding:16px 20px}
+.card+.card{margin-top:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:5px}
+.field input,.field select{width:100%;padding:10px 14px;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--surface2);color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:border .15s}
+.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,120,212,.1)}
+.field input[type="password"]{letter-spacing:.12em}
+.field-code input{text-transform:uppercase;letter-spacing:.18em;font-family:var(--mono);font-weight:500}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:var(--r);font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dk)}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:#162033}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}.btn-ghost:hover{background:var(--surface2)}
+.btn-danger{background:#FEF2F2;color:#B91C1C;border:1.5px solid #FECACA}.btn-danger:hover{background:#FEE2E2}
+.btn-warn{background:#FFFBEB;color:#92400E;border:1.5px solid #FDE68A}.btn-warn:hover{background:#FEF3C7}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn:disabled{opacity:.4;cursor:default;pointer-events:none}
+.btn-full{width:100%;justify-content:center}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.02em}
+.b-blue{background:var(--blue-lt);color:#0C447C}
+.b-green{background:#ECFDF5;color:#065F46}
+.b-red{background:#FEF2F2;color:#B91C1C}
+.b-amber{background:#FFFBEB;color:#92400E}
+.b-gray{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.login-center{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{width:100%;max-width:420px}
+.login-logo{width:56px;height:56px;background:var(--blue);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.login-logo svg{width:28px;height:28px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.login-title{font-size:22px;font-weight:600;text-align:center;margin-bottom:6px}
+.login-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:24px;line-height:1.6}
+.error-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:var(--r);padding:10px 14px;font-size:13px;color:#B91C1C;margin-bottom:14px}
+.info-box{background:var(--blue-xlt);border:1px solid #bfdbfe;border-radius:var(--r);padding:10px 14px;font-size:13px;color:#1e40af;margin-top:14px;line-height:1.5}
+.warn-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--r);padding:10px 14px;font-size:13px;color:#92400E;margin-top:10px;line-height:1.5}
+/* ── QCM ── */
+.qcm-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.qcm-label{font-size:13px;color:var(--text2);font-weight:500}
+.qcm-timer{font-size:15px;font-weight:600;color:var(--text);font-family:var(--mono)}
+.qcm-timer.warn{color:var(--danger);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.prog-track{height:5px;background:var(--border);border-radius:5px;overflow:hidden;margin-bottom:24px}
+.prog-fill{height:5px;background:var(--blue);border-radius:5px;transition:width .5s}
+.q-part{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--blue);text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;font-weight:500;color:var(--text);line-height:1.65;margin-bottom:18px;user-select:none}
+.q-opts{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:1.5px solid var(--border2);border-radius:var(--r);cursor:pointer;background:var(--surface);text-align:left;width:100%;transition:all .15s;user-select:none}
+.q-opt:hover{border-color:var(--blue);background:var(--blue-xlt)}
+.q-opt.sel{border-color:var(--blue);background:var(--blue-lt)}
+.q-opt.sel .q-ltr{background:var(--blue);color:#fff;border-color:var(--blue)}
+.q-ltr{min-width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;font-family:var(--mono)}
+.q-txt{font-size:14px;color:var(--text);line-height:1.55;user-select:none}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px}
+.q-dots{display:flex;flex-wrap:wrap;gap:5px;flex:1;justify-content:center}
+.q-dot{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface);font-size:10px;font-weight:600;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:var(--mono)}
+.q-dot:hover{border-color:var(--blue);color:var(--blue)}
+.q-dot.done{background:var(--blue);color:#fff;border-color:var(--blue)}
+.q-dot.cur{border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 3px rgba(0,120,212,.15)}
+/* ── Bannière anti-triche ── */
+.at-banner{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:var(--r);margin-bottom:16px}
+.at-banner svg{flex-shrink:0;color:#B91C1C}
+.at-banner-txt{font-size:13px;color:#B91C1C;line-height:1.5}
+.at-banner-txt strong{font-weight:600}
+/* ── Résultat étudiant ── */
+.result-hero{text-align:center;padding:12px 0 24px}
+.score-ring{width:110px;height:110px;border-radius:50%;border:4px solid var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;background:var(--blue-xlt)}
+.score-pct{font-size:30px;font-weight:700;color:var(--blue);font-family:var(--mono)}
+.score-frac{font-size:12px;color:var(--text2);font-weight:500}
+.result-mention{font-size:20px;font-weight:600;margin-bottom:4px}
+.result-who{font-size:13px;color:var(--text2)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.stat-box{background:var(--surface2);border-radius:var(--r);padding:12px 14px;border:1px solid var(--border)}
+.stat-lbl{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.stat-val{font-size:18px;font-weight:700;color:var(--text);font-family:var(--mono)}
+.stat-val.green{color:var(--success)}.stat-val.red{color:var(--danger)}
+.review-list{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.rev-item{padding:11px 14px;border-radius:var(--r);border:1px solid var(--border)}
+.rev-item.ok{border-color:#A7F3D0;background:#ECFDF5}
+.rev-item.ko{border-color:#FECACA;background:#FEF2F2}
+.rev-q{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.rev-a{font-size:12px;color:var(--text2)}
+.rev-a .ok-t{color:#065F46}.rev-a .ko-t{color:#B91C1C}
+/* ── Violations log ── */
+.viol-log{margin-top:16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.viol-log-header{background:#FEF2F2;border-bottom:1px solid #FECACA;padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#B91C1C}
+.viol-log-body{max-height:160px;overflow-y:auto}
+.viol-log-item{padding:6px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);font-family:var(--mono)}
+.viol-log-item:last-child{border-bottom:none}
+/* ── Dashboard formateur ── */
+.dash-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.dash-title{font-size:20px;font-weight:600}
+.dash-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow)}
+.kpi-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:4px}
+.kpi-val{font-size:26px;font-weight:700;color:var(--text);font-family:var(--mono)}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--success)}.dot-blue{background:var(--blue)}.dot-gray{background:var(--text3)}.dot-red{background:var(--danger)}
+.dot-pulse{animation:dot-pulse 1.4s infinite}
+@keyframes dot-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}
+.table-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:10px 14px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);background:var(--surface2);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--blue-xlt)}
+.mini-prog{display:flex;align-items:center;gap:8px}
+.mini-track{flex:1;height:5px;background:var(--border);border-radius:5px;overflow:hidden;min-width:60px}
+.mini-fill{height:5px;background:var(--blue);border-radius:5px;transition:width .5s}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
+.q-break-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.q-break-item:last-child{border-bottom:none}
+.q-break-num{width:22px;font-size:11px;font-weight:700;color:var(--text2);font-family:var(--mono);flex-shrink:0}
+.q-break-text{flex:1;color:var(--text);line-height:1.4}
+.q-break-bar{width:90px;flex-shrink:0}
+.q-break-track{height:6px;background:var(--border);border-radius:6px;overflow:hidden}
+.q-break-fill{height:6px;border-radius:6px;transition:width .6s}
+.q-break-pct{width:34px;text-align:right;font-size:12px;font-weight:700;font-family:var(--mono);flex-shrink:0}
+.csv-area{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px;font-family:var(--mono);font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-all;max-height:180px;overflow-y:auto;line-height:1.7}
+.detail-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-top:16px}
+.detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.detail-name{font-size:16px;font-weight:600}
+.detail-meta{font-size:12px;color:var(--text2);margin-top:2px}
+.detail-items{display:flex;flex-direction:column;gap:0}
+.di{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
+.di:last-child{border-bottom:none}
+.di-num{min-width:18px;font-weight:700;color:var(--text2);font-family:var(--mono);flex-shrink:0}
+.di-q{flex:1;color:var(--text);line-height:1.45}
+.di-icon{font-size:16px;flex-shrink:0}
+.di-ok{color:var(--success)}.di-ko{color:var(--danger)}
+.live-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--success);background:#ECFDF5;border:1px solid #A7F3D0;border-radius:20px;padding:3px 10px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toggle-row{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:16px}
+.toggle-label{flex:1;font-size:14px;font-weight:500;color:var(--text)}
+.toggle-sub{font-size:12px;color:var(--text2)}
+/* ── Panneau changement mot de passe ── */
+.pwd-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-top:16px}
+.pwd-panel h3{font-size:14px;font-weight:600;margin-bottom:14px;color:var(--text)}
+.pwd-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.pwd-row .field{flex:1;min-width:180px;margin-bottom:0}
+/* ── Log violations formateur ── */
+.viol-table-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.vt-red{background:#FEF2F2;color:#B91C1C}
+.vt-green{color:var(--success);font-size:13px;font-weight:700}
+.detail-viol-log{margin-top:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:var(--r);overflow:hidden}
+.detail-viol-header{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#B91C1C;border-bottom:1px solid #FECACA}
+.detail-viol-item{padding:6px 14px;border-bottom:1px solid #FECACA;font-size:12px;color:#7F1D1D;font-family:var(--mono);display:flex;gap:16px}
+.detail-viol-item:last-child{border-bottom:none}
+.dvi-type{font-weight:600;min-width:140px}
+.dvi-time{color:#B91C1C;opacity:.7}
+@media(max-width:640px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .q-dots{display:none}
+  .main{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<nav class="topbar">
+  <a class="topbar-brand" href="#">
+    <div class="topbar-dot"></div>
+    <span class="topbar-name">QCM Azure — Bac+3</span>
+  </a>
+  <div class="topbar-tabs">
+    <button class="topbar-tab active" id="tab-student" onclick="switchTab('student')">Étudiant</button>
+    <button class="topbar-tab" id="tab-teacher" onclick="switchTab('teacher')">Formateur</button>
+  </div>
+</nav>
+
+<!-- ═══════ VUE ÉTUDIANT ═══════ -->
+<div id="view-student">
+
+  <!-- Identification -->
+  <div id="screen-login" class="login-center">
+    <div class="login-box">
+      <div class="login-logo">
+        <svg viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+      </div>
+      <h1 class="login-title">Évaluation Azure</h1>
+      <p class="login-sub">Renseignez vos informations et le code d'accès transmis par votre formateur.</p>
+      <div class="card">
+        <div id="login-err" class="error-box hidden"></div>
+        <div class="field">
+          <label>Prénom et nom complet</label>
+          <input type="text" id="inp-name" placeholder="Marie Dupont" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Groupe</label>
+          <select id="inp-group">
+            <option value="">— Sélectionner —</option>
+            <option>Groupe A</option>
+            <option>Groupe B</option>
+            <option>Groupe C</option>
+          </select>
+        </div>
+        <div class="field field-code">
+          <label>Code d'accès</label>
+          <input type="text" id="inp-code" placeholder="AZUR2026" autocomplete="off" maxlength="20">
+        </div>
+        <button class="btn btn-primary btn-full" onclick="startQCM()" id="btn-start" style="margin-top:8px">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Commencer le QCM
+        </button>
+        <div class="info-box">
+          <strong>Notice :</strong> votre identité, vos réponses, votre score et tous les événements de surveillance (sorties de fenêtre, copier-coller, clic droit, perte de focus) sont enregistrés en temps réel sur le serveur et visibles par votre formateur.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QCM actif -->
+  <div id="screen-qcm" class="hidden">
+    <div class="main">
+      <div id="at-banner-zone"></div>
+      <div class="qcm-top">
+        <span class="qcm-label" id="qcm-counter">Question 1 / 20</span>
+        <span class="qcm-timer" id="qcm-timer">30:00</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div id="qcm-area"></div>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div id="screen-result" class="hidden">
+    <div class="main">
+      <div class="card">
+        <div class="result-hero">
+          <div class="score-ring">
+            <span class="score-pct" id="r-pct">—</span>
+            <span class="score-frac" id="r-frac">—</span>
+          </div>
+          <div class="result-mention" id="r-mention">—</div>
+          <div class="result-who" id="r-who"></div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box"><div class="stat-lbl">Bonnes réponses</div><div class="stat-val" id="r-correct">—</div></div>
+          <div class="stat-box"><div class="stat-lbl">Score</div><div class="stat-val" id="r-score">—</div></div>
+          <div class="stat-box"><div class="stat-lbl">Temps</div><div class="stat-val" id="r-time">—</div></div>
+          <div class="stat-box"><div class="stat-lbl">Alertes</div><div class="stat-val" id="r-viol">—</div></div>
+        </div>
+        <div id="r-viol-log"></div>
+        <div class="section-label" style="margin-top:16px">Correction détaillée</div>
+        <div class="review-list" id="review-list"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /view-student -->
+
+<!-- ═══════ VUE FORMATEUR ═══════ -->
+<div id="view-teacher" class="hidden">
+
+  <!-- Login formateur -->
+  <div id="teacher-login" class="login-center">
+    <div class="login-box">
+      <div class="login-logo" style="background:#0F6E56">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h1 class="login-title">Accès formateur</h1>
+      <p class="login-sub">Tableau de bord temps réel — résultats, progression et surveillance</p>
+      <div class="card">
+        <div id="teacher-err" class="error-box hidden"></div>
+        <div class="field">
+          <label>Mot de passe formateur</label>
+          <input type="password" id="inp-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')teacherLogin()">
+        </div>
+        <button class="btn btn-navy btn-full" onclick="teacherLogin()" style="margin-top:4px">
+          Accéder au tableau de bord
+        </button>
+        <div class="info-box">Mot de passe par défaut : <strong>FORMATEUR</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="teacher-dash" class="hidden">
+    <div class="main">
+
+      <div class="dash-header">
+        <div>
+          <div class="dash-title">Tableau de bord</div>
+          <div class="dash-sub">
+            Évaluation finale · Introduction à Microsoft Azure &nbsp;
+            <span class="live-badge"><span class="dot dot-green dot-pulse"></span>Live</span>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button class="btn btn-ghost btn-sm" onclick="toggleQCM()" id="btn-toggle-qcm">⏸ Désactiver le QCM</button>
+          <button class="btn btn-ghost btn-sm" onclick="showPwdPanel()">🔑 Changer le mot de passe</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportCSV()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Export CSV
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="resetAll()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+            Réinitialiser
+          </button>
+        </div>
+      </div>
+
+      <!-- Toggle accès -->
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Accès étudiant</div>
+          <div class="toggle-sub">Code d'accès : <strong id="dash-code">AZUR2026</strong> · Les étudiants peuvent s'inscrire et passer le QCM</div>
+        </div>
+        <span class="badge b-green" id="qcm-status-badge">Actif</span>
+      </div>
+
+      <!-- Panneau changement mot de passe -->
+      <div id="pwd-panel" class="pwd-panel hidden">
+        <h3>Changer le mot de passe formateur</h3>
+        <div id="pwd-panel-err" class="error-box hidden"></div>
+        <div id="pwd-panel-ok" class="info-box hidden"></div>
+        <div class="pwd-row">
+          <div class="field">
+            <label>Mot de passe actuel</label>
+            <input type="password" id="pwd-current" placeholder="••••••••">
+          </div>
+          <div class="field">
+            <label>Nouveau mot de passe</label>
+            <input type="password" id="pwd-new" placeholder="••••••••" minlength="6">
+          </div>
+          <div class="field">
+            <label>Confirmer</label>
+            <input type="password" id="pwd-confirm" placeholder="••••••••">
+          </div>
+          <button class="btn btn-navy btn-sm" onclick="changePassword()" style="margin-bottom:0;height:40px">Valider</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('pwd-panel').classList.add('hidden')" style="margin-bottom:0;height:40px">Annuler</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-lbl">Connectés</div><div class="kpi-val" id="kpi-total">0</div><div class="kpi-sub">étudiants inscrits</div></div>
+        <div class="kpi"><div class="kpi-lbl">Terminé</div><div class="kpi-val" id="kpi-done">0</div><div class="kpi-sub">soumissions</div></div>
+        <div class="kpi"><div class="kpi-lbl">Score moyen</div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-sub">sur les terminés</div></div>
+        <div class="kpi"><div class="kpi-lbl">Alertes totales</div><div class="kpi-val" id="kpi-viol">0</div><div class="kpi-sub">tous types, toutes sessions</div></div>
+      </div>
+
+      <!-- Table -->
+      <div class="card card-sm" style="margin-bottom:16px">
+        <div class="section-label">Suivi par étudiant</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Étudiant</th><th>Groupe</th><th>Statut</th>
+                <th>Avancement</th><th>Score</th>
+                <th>Temps</th><th>Alertes</th><th>Détail</th>
+              </tr>
+            </thead>
+            <tbody id="t-body">
+              <tr><td colspan="8" style="text-align:center;color:var(--text3);padding:2.5rem;font-style:italic">En attente des étudiants...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Détail étudiant -->
+      <div id="detail-panel" class="detail-panel hidden"></div>
+
+      <!-- Taux de réussite par question -->
+      <div class="card card-sm" style="margin-bottom:16px">
+        <div class="section-label">Taux de réussite par question</div>
+        <div id="q-breakdown"></div>
+      </div>
+
+      <!-- Export CSV -->
+      <div class="card card-sm">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div class="section-label" style="margin:0">Export CSV</div>
+          <button class="btn btn-ghost btn-sm" onclick="copyCSV()">Copier</button>
+        </div>
+        <div class="csv-area" id="csv-area">Aucune donnée.</div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /view-teacher -->
+
+</div><!-- /app -->
+
+<script>
+const QCM=[
+  {part:"Cloud & organisation",q:"Dans le modèle IaaS sur Azure, quelle responsabilité incombe exclusivement au client ?",choices:["La maintenance du matériel physique dans le datacenter","La gestion de l'hyperviseur et du réseau physique","Le patching du système d'exploitation et la configuration des middlewares","La redondance électrique et la climatisation des salles serveurs"],answer:2},
+  {part:"Cloud & organisation",q:"Qu'est-ce qu'une Availability Zone dans Azure ?",choices:["Un datacenter situé dans un pays différent pour la reprise après sinistre","Un ou plusieurs datacenters physiquement isolés au sein d'une même région, avec alimentation et réseau indépendants","Un groupe de régions partageant la même infrastructure réseau backbone","Un service de répartition de charge automatique entre plusieurs régions"],answer:1},
+  {part:"Cloud & organisation",q:"Quel est l'ordre hiérarchique correct de la structure organisationnelle Azure ?",choices:["Subscription → Management Group → Tenant → Resource Group → Resource","Tenant → Management Group → Subscription → Resource Group → Resource","Resource Group → Subscription → Management Group → Tenant → Resource","Tenant → Subscription → Management Group → Resource → Resource Group"],answer:1},
+  {part:"Cloud & organisation",q:"Parmi ces services Azure, lequel est un exemple de modèle PaaS ?",choices:["Azure Virtual Machine","Azure Managed Disk","Azure App Service","Azure Virtual Network"],answer:2},
+  {part:"Calcul",q:"Vous hébergez une base de données MySQL nécessitant un ratio RAM élevé. Quelle famille de VM Azure est la plus adaptée ?",choices:["Série B — burstable, pour les charges variables","Série D — general purpose, ratio CPU/RAM équilibré","Série E — memory optimized, ratio RAM élevé","Série F — compute optimized, CPU haute fréquence"],answer:2},
+  {part:"Calcul",q:"Quelle est la principale différence entre un Availability Set et un déploiement multi-Availability Zone ?",choices:["Un Availability Set protège contre la panne d'un datacenter entier ; les AZ protègent contre la panne d'un rack","Un Availability Set distribue les VMs sur des fault/update domains dans un même datacenter ; les AZ les distribuent sur des datacenters physiquement distincts","Les deux mécanismes sont identiques, seul le SLA associé diffère","Un Availability Set est réservé aux VMs Windows ; les AZ supportent Linux et Windows"],answer:1},
+  {part:"Calcul",q:"Azure VM Scale Sets (VMSS) permet principalement de :",choices:["Cloner une VM dans un autre datacenter pour la sauvegarde","Connecter des VMs on-premise à Azure via VPN","Déployer et gérer un groupe de VMs identiques avec scaling horizontal automatique basé sur des métriques","Regrouper des VMs de types différents dans une seule unité de facturation"],answer:2},
+  {part:"Stockage",q:"Vous devez stocker des archives légales pendant 7 ans, consultées moins d'une fois par an. Quel niveau Blob Storage est le plus adapté ?",choices:["Hot — accès immédiat, coût stockage élevé","Cool — accès occasionnel, rétention minimum 30 jours","Cold — accès rare, rétention minimum 90 jours","Archive — réhydratation requise, coût stockage minimal, rétention longue durée"],answer:3},
+  {part:"Stockage",q:"Le type de redondance Azure Storage qui garantit 3 copies dans 3 datacenters distincts au sein d'une même région s'appelle :",choices:["LRS — Locally Redundant Storage","ZRS — Zone-Redundant Storage","GRS — Geo-Redundant Storage","GZRS — Geo-Zone-Redundant Storage"],answer:1},
+  {part:"Stockage",q:"Une application doit accéder à un Storage Account sans stocker de credentials dans le code. Quelle est la solution recommandée ?",choices:["Stocker les access keys dans des variables d'environnement système","Utiliser une Managed Identity avec un rôle RBAC attribué sur le Storage Account","Créer un SAS token d'un an et le passer en variable d'environnement","Partager les credentials via un fichier de configuration chiffré"],answer:1},
+  {part:"Réseau",q:"Un subnet Azure /26 dispose de combien d'adresses IP utilisables par des ressources déployées ?",choices:["64 adresses","62 adresses","59 adresses (Azure réserve 5 adresses par subnet)","56 adresses"],answer:2},
+  {part:"Réseau",q:"Un NSG (Network Security Group) filtre le trafic à quel niveau du modèle OSI ?",choices:["Niveau 7 — il inspecte le contenu HTTP/HTTPS","Niveau 3/4 — il filtre sur IP source/destination et numéro de port","Niveau 2 — il filtre sur les adresses MAC","Niveau 5 — il maintient l'état des sessions TLS"],answer:1},
+  {part:"Réseau",q:"Quelle technologie Azure permet de relier deux VNets via le backbone Microsoft sans passer par Internet ?",choices:["Azure ExpressRoute","Azure VNet Peering","Azure VPN Gateway Site-to-Site","Azure Application Gateway"],answer:1},
+  {part:"Réseau",q:"Quelle est la principale différence entre Azure Load Balancer Standard et Azure Application Gateway ?",choices:["Azure Load Balancer est payant ; Azure Application Gateway est gratuit","Azure Load Balancer opère en couche 4 (TCP/UDP) ; Azure Application Gateway opère en couche 7 (HTTP/HTTPS) avec WAF","Azure Application Gateway ne supporte que HTTPS, pas HTTP","Azure Load Balancer ne peut distribuer le trafic qu'au sein d'un même subnet"],answer:1},
+  {part:"Identité & Sécurité",q:"Quelle est la différence fondamentale entre Microsoft Entra ID et Active Directory Domain Services ?",choices:["Entra ID utilise LDAP et Kerberos comme AD DS, mais hébergé dans le cloud","Entra ID est un annuaire cloud natif (OAuth2, OIDC, SAML) ; AD DS repose sur LDAP/Kerberos pour les environnements réseau locaux","Entra ID ne supporte pas les groupes d'utilisateurs, contrairement à AD DS","AD DS est plus sécurisé car il ne nécessite pas de connexion Internet"],answer:1},
+  {part:"Identité & Sécurité",q:"Le modèle RBAC Azure repose sur trois éléments. Lequel des ensembles suivants est correct ?",choices:["Tenant + Subscription + Resource Group","Security Principal + Role Definition + Scope","User + Password + Permission","Identity + Policy + Action"],answer:1},
+  {part:"Identité & Sécurité",q:"Quel service Azure permet de stocker des secrets applicatifs, des clés de chiffrement et des certificats TLS de façon centralisée ?",choices:["Azure Security Center","Azure Active Directory Certificate Services","Azure Key Vault","Microsoft Defender for Identity"],answer:2},
+  {part:"Supervision & IaC",q:"Dans KQL (Kusto Query Language), quel opérateur permet de filtrer les lignes d'une table selon une condition ?",choices:["summarize","project","where","extend"],answer:2},
+  {part:"Supervision & IaC",q:"Quelle est la caractéristique principale d'un déploiement Bicep par rapport à un déploiement manuel via le portail Azure ?",choices:["Bicep est plus rapide que le portail pour créer une VM","Bicep est déclaratif et idempotent : exécuté plusieurs fois, il ne recrée les ressources que si leur configuration a changé","Bicep ne supporte que les ressources réseau et stockage","Bicep nécessite PowerShell pour être exécuté"],answer:1},
+  {part:"Architecture",q:"Dans le Azure Well-Architected Framework, que désigne le RPO (Recovery Point Objective) ?",choices:["Le temps maximum acceptable entre une panne et le retour à un service normal","Le nombre maximum de régions sur lesquelles une application doit être déployée","La quantité maximale de données pouvant être perdues, mesurée en temps","Le pourcentage minimal de disponibilité garanti par le SLA"],answer:2}
+];
+
+// ── State étudiant ──
+let st={sessionId:null,name:'',group:'',answers:new Array(20).fill(-1),cur:0,
+        violations:[],secsLeft:1800,timerRef:null,startTime:null,submitted:false};
+let teacherPwd='';
+let teacherRef=null;
+let qcmActive=true;
+
+// ── Utilitaires ──
+function now(){ return new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function showErr(el,msg){el.textContent=msg;el.classList.remove('hidden');}
+
+// ── Onglets ──
+function switchTab(t){
+  ['student','teacher'].forEach(x=>{
+    document.getElementById('view-'+x).classList.toggle('hidden',x!==t);
+    document.getElementById('tab-'+x).classList.toggle('active',x===t);
+  });
+  if(t==='teacher'&&teacherPwd) refreshDash();
+}
+
+// ── Login étudiant ──
+async function startQCM(){
+  const name=document.getElementById('inp-name').value.trim();
+  const group=document.getElementById('inp-group').value;
+  const code=document.getElementById('inp-code').value.trim().toUpperCase();
+  const err=document.getElementById('login-err');
+  err.classList.add('hidden');
+  if(!name){showErr(err,'Veuillez saisir votre prénom et nom.');return;}
+  if(!group){showErr(err,'Veuillez sélectionner votre groupe.');return;}
+  if(!code){showErr(err,'Veuillez saisir le code d\'accès.');return;}
+  document.getElementById('btn-start').disabled=true;
+  try{
+    const r=await fetch('/api/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,group,code})});
+    const data=await r.json();
+    if(!r.ok){showErr(err,data.error||'Erreur inconnue');document.getElementById('btn-start').disabled=false;return;}
+    st.sessionId=data.sessionId; st.name=name; st.group=group;
+    st.secsLeft=data.duration||1800; st.startTime=Date.now();
+    document.getElementById('screen-login').classList.add('hidden');
+    document.getElementById('screen-qcm').classList.remove('hidden');
+    renderQ(0);
+    startTimer();
+    setupAntiCheat();
+  }catch(e){showErr(err,'Impossible de joindre le serveur.');document.getElementById('btn-start').disabled=false;}
+}
+
+// ── Rendu question ──
+function renderQ(idx){
+  st.cur=idx;
+  const q=QCM[idx];
+  document.getElementById('qcm-counter').textContent=`Question ${idx+1} / ${QCM.length}`;
+  const done=st.answers.filter(a=>a>=0).length;
+  document.getElementById('prog-fill').style.width=Math.round(done/QCM.length*100)+'%';
+  const dots=QCM.map((_,i)=>`<button class="q-dot${st.answers[i]>=0?' done':''}${i===idx?' cur':''}" onclick="goQ(${i})">${i+1}</button>`).join('');
+  document.getElementById('qcm-area').innerHTML=`
+    <div class="card">
+      <div class="q-part">${q.part}</div>
+      <div class="q-text">${idx+1}. ${q.q}</div>
+      <div class="q-opts" id="q-opts">
+        ${q.choices.map((c,ci)=>`
+          <button class="q-opt${st.answers[idx]===ci?' sel':''}" onclick="pickAns(${idx},${ci})">
+            <span class="q-ltr">${String.fromCharCode(65+ci)}</span>
+            <span class="q-txt">${c}</span>
+          </button>`).join('')}
+      </div>
+    </div>
+    <div class="q-nav">
+      <button class="btn btn-ghost" onclick="goQ(${idx-1})" ${idx===0?'disabled':''} style="min-width:100px">← Précédent</button>
+      <div class="q-dots">${dots}</div>
+      ${idx<QCM.length-1
+        ?`<button class="btn btn-primary" onclick="goQ(${idx+1})" style="min-width:100px">Suivant →</button>`
+        :`<button class="btn btn-navy" onclick="confirmSubmit()" style="min-width:120px">✓ Soumettre</button>`}
+    </div>`;
+}
+
+function goQ(i){if(i>=0&&i<QCM.length)renderQ(i);}
+
+function pickAns(q,c){
+  if(st.submitted)return;
+  st.answers[q]=c;
+  document.querySelectorAll('#q-opts .q-opt').forEach((b,ci)=>{b.classList.toggle('sel',ci===c);});
+  const done=st.answers.filter(a=>a>=0).length;
+  document.getElementById('prog-fill').style.width=Math.round(done/QCM.length*100)+'%';
+  syncProgress();
+}
+
+async function syncProgress(){
+  if(!st.sessionId)return;
+  try{await fetch('/api/session/'+st.sessionId,{method:'PATCH',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({progress:st.answers.filter(a=>a>=0).length,violations:st.violations,answers:[...st.answers]})});}
+  catch(e){}
+}
+
+function confirmSubmit(){
+  const u=st.answers.filter(a=>a<0).length;
+  if(u>0){if(!confirm(`${u} question(s) sans réponse. Soumettre quand même ?`))return;}
+  doSubmit();
+}
+
+async function doSubmit(){
+  if(st.submitted)return;
+  st.submitted=true;
+  clearInterval(st.timerRef);
+  const elapsed=Math.round((Date.now()-st.startTime)/1000);
+  try{
+    const r=await fetch('/api/submit/'+st.sessionId,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({answers:[...st.answers],timeUsed:elapsed,violations:st.violations})});
+    const data=await r.json();
+    showStudentResult(data.score,data.correct,data.time);
+  }catch(e){
+    const correct=st.answers.reduce((a,ans,i)=>a+(ans===QCM[i].answer?1:0),0);
+    const score=Math.round(correct/20*100);
+    const mm=String(Math.floor(elapsed/60)).padStart(2,'0'),ss=String(elapsed%60).padStart(2,'0');
+    showStudentResult(score,correct,mm+':'+ss);
+  }
+}
+
+function showStudentResult(score,correct,time){
+  document.getElementById('screen-qcm').classList.add('hidden');
+  document.getElementById('screen-result').classList.remove('hidden');
+  const mention=score>=80?'Très bien':score>=60?'Assez bien':score>=50?'Passable':'Insuffisant';
+  const cls=score>=60?'green':'red';
+  document.getElementById('r-pct').textContent=score+'%';
+  document.getElementById('r-frac').textContent=correct+'/20';
+  document.getElementById('r-mention').textContent=mention;
+  document.getElementById('r-who').textContent=st.name+' · '+st.group;
+  document.getElementById('r-correct').textContent=correct+' / 20';document.getElementById('r-correct').className='stat-val '+cls;
+  document.getElementById('r-score').textContent=score+' %';document.getElementById('r-score').className='stat-val '+cls;
+  document.getElementById('r-time').textContent=time;
+  document.getElementById('r-viol').textContent=st.violations.length;
+  document.getElementById('r-viol').className='stat-val '+(st.violations.length>0?'red':'green');
+  // Log violations étudiant
+  const vz=document.getElementById('r-viol-log');
+  if(st.violations.length>0){
+    vz.innerHTML=`<div class="viol-log"><div class="viol-log-header">${st.violations.length} événement(s) de surveillance enregistré(s)</div><div class="viol-log-body">${st.violations.map(v=>`<div class="viol-log-item">${v.time} — ${v.type}</div>`).join('')}</div></div>`;
+  } else {
+    vz.innerHTML='';
+  }
+  document.getElementById('review-list').innerHTML=QCM.map((q,i)=>{
+    const ok=st.answers[i]===q.answer;
+    return`<div class="rev-item ${ok?'ok':'ko'}">
+      <div class="rev-q">${i+1}. ${q.q}</div>
+      <div class="rev-a">${ok
+        ?`<span class="ok-t">✓ ${q.choices[q.answer]}</span>`
+        :`<span class="ko-t">✗ ${st.answers[i]>=0?q.choices[st.answers[i]]:'Sans réponse'}</span><br><span class="ok-t">✓ ${q.choices[q.answer]}</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Chrono ──
+function startTimer(){
+  const el=document.getElementById('qcm-timer');
+  st.timerRef=setInterval(()=>{
+    st.secsLeft--;
+    const m=Math.floor(st.secsLeft/60),s=st.secsLeft%60;
+    if(el){el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');if(st.secsLeft<=300)el.classList.add('warn');}
+    if(st.secsLeft<=0){clearInterval(st.timerRef);alert('Temps écoulé ! Soumission automatique.');doSubmit();}
+  },1000);
+}
+
+// ══════════════════════════════════════════════════════
+// ── ANTI-TRICHE — détection complète ──────────────────
+// ══════════════════════════════════════════════════════
+function recordViolation(type){
+  if(st.submitted)return;
+  const entry={type,time:now()};
+  st.violations.push(entry);
+  // Mettre à jour la bannière
+  updateAtBanner();
+  // Sync serveur
+  syncProgress();
+}
+
+function updateAtBanner(){
+  const zone=document.getElementById('at-banner-zone');
+  if(!zone)return;
+  const n=st.violations.length;
+  const last=st.violations[n-1];
+  zone.innerHTML=`<div class="at-banner" style="margin-bottom:14px">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <div class="at-banner-txt">
+      <strong>Alerte ${n} — ${last.type}</strong> à ${last.time}<br>
+      Cet événement est enregistré et transmis à votre formateur. ${n>1?`(${n} alertes au total)`:''}
+    </div>
+  </div>`;
+}
+
+function setupAntiCheat(){
+  // 1. Changement d'onglet / fenêtre en arrière-plan
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden&&!st.submitted){
+      recordViolation('Sortie de fenêtre (onglet/alt-tab)');
+    }
+  });
+
+  // 2. Perte de focus (clic en dehors, autre application)
+  window.addEventListener('blur',()=>{
+    if(!st.submitted){
+      recordViolation('Perte de focus (fenêtre quittée)');
+    }
+  });
+
+  // 3. Blocage du clic droit
+  document.addEventListener('contextmenu',(e)=>{
+    if(st.submitted)return;
+    e.preventDefault();
+    recordViolation('Clic droit bloqué');
+    return false;
+  });
+
+  // 4. Blocage des raccourcis clavier suspects
+  document.addEventListener('keydown',(e)=>{
+    if(st.submitted)return;
+    const key=e.key.toLowerCase();
+    // Ctrl/Cmd + C (copier), Ctrl/Cmd + A (tout sélectionner), Ctrl/Cmd + P (imprimer)
+    // F12 (DevTools), Ctrl+Shift+I, Ctrl+U (source)
+    const blockedCombos=(e.ctrlKey||e.metaKey)&&['c','a','p','u','s'].includes(key);
+    const devtools=e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['i','j','c'].includes(key));
+    const printScreen=e.key==='PrintScreen';
+    if(blockedCombos||devtools||printScreen){
+      e.preventDefault();
+      const labels={c:'Copier (Ctrl+C)',a:'Tout sélectionner (Ctrl+A)',p:'Imprimer (Ctrl+P)',
+                    u:'Source page (Ctrl+U)',s:'Enregistrer (Ctrl+S)',
+                    F12:'DevTools (F12)',i:'DevTools (Ctrl+Shift+I)',
+                    j:'Console (Ctrl+Shift+J)',PrintScreen:'Capture d\'écran'};
+      const label=printScreen?labels.PrintScreen:devtools?labels[e.key]||'Raccourci DevTools':labels[key]||'Raccourci bloqué';
+      recordViolation(`Raccourci bloqué : ${label}`);
+      return false;
+    }
+  });
+
+  // 5. Blocage du copier-coller via sélection de texte + copie
+  document.addEventListener('copy',(e)=>{
+    if(st.submitted)return;
+    e.preventDefault();
+    recordViolation('Tentative de copie du contenu');
+  });
+
+  // 6. Désactivation de la sélection de texte sur les questions
+  document.addEventListener('selectstart',(e)=>{
+    if(st.submitted)return;
+    // Autoriser dans les inputs, bloquer ailleurs
+    if(e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){
+      e.preventDefault();
+    }
+  });
+}
+
+// ── Login formateur ──
+async function teacherLogin(){
+  const pwd=document.getElementById('inp-pwd').value;
+  const err=document.getElementById('teacher-err');
+  err.classList.add('hidden');
+  try{
+    const r=await fetch('/api/results',{headers:{'x-teacher-pwd':pwd}});
+    if(!r.ok){showErr(err,'Mot de passe incorrect.');return;}
+    teacherPwd=pwd;
+    document.getElementById('teacher-login').classList.add('hidden');
+    document.getElementById('teacher-dash').classList.remove('hidden');
+    refreshDash();
+    teacherRef=setInterval(refreshDash,3000);
+  }catch(e){showErr(err,'Impossible de joindre le serveur.');}
+}
+
+async function refreshDash(){
+  if(!teacherPwd)return;
+  try{
+    const r=await fetch('/api/results',{headers:{'x-teacher-pwd':teacherPwd}});
+    if(!r.ok)return;
+    const data=await r.json();
+    qcmActive=data.active!==false;
+    updateDash(data);
+    if(data.config&&data.config.accessCode){
+      document.getElementById('dash-code').textContent=data.config.accessCode;
+    }
+  }catch(e){}
+}
+
+function updateDash(data){
+  const{sessions,stats}=data;
+  document.getElementById('kpi-total').textContent=stats.total;
+  document.getElementById('kpi-done').textContent=stats.done;
+  document.getElementById('kpi-avg').textContent=stats.avg!==null?stats.avg+'%':'—';
+  // Total alertes (violations)
+  const totalViol=sessions.reduce((a,s)=>a+(Array.isArray(s.violations)?s.violations.length:(s.violations||0)),0);
+  document.getElementById('kpi-viol').textContent=totalViol;
+  const tbody=document.getElementById('t-body');
+  if(!sessions.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:2.5rem;font-style:italic">En attente des étudiants...</td></tr>';return;}
+  tbody.innerHTML=sessions.map(s=>{
+    const pct=Math.round((s.progress||0)/20*100);
+    const nViol=Array.isArray(s.violations)?s.violations.length:(s.violations||0);
+    const statusHtml=s.status==='terminé'
+      ?`<span class="badge b-green"><span class="dot dot-blue" style="display:inline-block"></span> Terminé</span>`
+      :`<span class="badge b-amber"><span class="dot dot-green dot-pulse" style="display:inline-block"></span> En cours</span>`;
+    const scoreHtml=s.score!==null?`<span class="badge ${s.score>=60?'b-green':'b-red'}">${s.score}%</span>`:`<span style="color:var(--text3)">—</span>`;
+    const violHtml=nViol>0?`<span class="vt-red viol-table-badge">${nViol} alerte${nViol>1?'s':''}</span>`:`<span class="vt-green">✓ 0</span>`;
+    return`<tr>
+      <td style="font-weight:600">${s.name}</td>
+      <td><span class="badge b-gray">${s.group}</span></td>
+      <td>${statusHtml}</td>
+      <td><div class="mini-prog"><div class="mini-track"><div class="mini-fill" style="width:${pct}%"></div></div><span style="font-size:12px;color:var(--text2);font-family:var(--mono)">${s.progress||0}/20</span></div></td>
+      <td>${scoreHtml}</td>
+      <td style="color:var(--text2);font-family:var(--mono);font-size:12px">${s.time||'—'}</td>
+      <td>${violHtml}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showDetail('${s.id}')">Voir</button></td>
+    </tr>`;
+  }).join('');
+  buildBreakdown(sessions.filter(s=>s.status==='terminé'));
+  buildCSV(sessions);
+}
+
+function buildBreakdown(done){
+  const el=document.getElementById('q-breakdown');
+  if(!done.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);padding:8px 0">Aucun étudiant n\'a encore terminé.</p>';return;}
+  el.innerHTML=QCM.map((q,i)=>{
+    const c=done.filter(s=>s.answers&&s.answers[i]===q.answer).length;
+    const p=Math.round(c/done.length*100);
+    const col=p>=70?'var(--success)':p>=40?'var(--warn)':'var(--danger)';
+    return`<div class="q-break-item">
+      <span class="q-break-num">${i+1}</span>
+      <span class="q-break-text">${q.q.length>80?q.q.substring(0,80)+'…':q.q}</span>
+      <div class="q-break-bar"><div class="q-break-track"><div class="q-break-fill" style="width:${p}%;background:${col}"></div></div></div>
+      <span class="q-break-pct" style="color:${col}">${p}%</span>
+    </div>`;
+  }).join('');
+}
+
+function buildCSV(sessions){
+  const area=document.getElementById('csv-area');
+  if(!sessions.length){area.textContent='Aucune donnée.';return;}
+  const hdr='Nom;Groupe;Statut;Score;Bonnes réponses;Temps;Nb alertes;Détail alertes;Début';
+  const rows=sessions.map(s=>{
+    const nViol=Array.isArray(s.violations)?s.violations.length:(s.violations||0);
+    const violDetail=Array.isArray(s.violations)?s.violations.map(v=>`${v.time}:${v.type}`).join('|'):'';
+    return[s.name,s.group,s.status,s.score!==null?s.score+'%':'',s.correct!==undefined?s.correct+'/20':'',s.time||'',nViol,violDetail,s.startedAt||''].join(';');
+  });
+  area.textContent=[hdr,...rows].join('\n');
+}
+
+async function showDetail(id){
+  try{
+    const r=await fetch('/api/session/'+id+'/detail',{headers:{'x-teacher-pwd':teacherPwd}});
+    const s=await r.json();
+    const panel=document.getElementById('detail-panel');
+    panel.classList.remove('hidden');
+    const nViol=Array.isArray(s.violations)?s.violations.length:(s.violations||0);
+    const violColor=nViol>0?'var(--danger)':'var(--success)';
+    const violLog=Array.isArray(s.violations)&&s.violations.length>0
+      ?`<div class="detail-viol-log">
+          <div class="detail-viol-header">${s.violations.length} événement(s) enregistré(s)</div>
+          ${s.violations.map(v=>`<div class="detail-viol-item"><span class="dvi-type">${v.type}</span><span class="dvi-time">${v.time}</span></div>`).join('')}
+        </div>`
+      :'';
+    if(s.status!=='terminé'||!s.answers){
+      panel.innerHTML=`<div class="detail-header"><div><div class="detail-name">${s.name}</div>
+        <div class="detail-meta">${s.group} · En cours · ${s.progress||0}/20 répondues · <span style="color:${violColor};font-weight:600">${nViol} alerte(s)</span></div></div>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('detail-panel').classList.add('hidden')">✕ Fermer</button></div>
+        ${violLog}<p style="font-size:13px;color:var(--text2);margin-top:10px">L'étudiant n'a pas encore terminé.</p>`;
+      panel.scrollIntoView({behavior:'smooth',block:'start'});
+      return;
+    }
+    panel.innerHTML=`
+      <div class="detail-header">
+        <div>
+          <div class="detail-name">${s.name}</div>
+          <div class="detail-meta">${s.group} · Score : <strong>${s.score}%</strong> (${s.correct}/20) · Temps : ${s.time||'—'} · Alertes : <strong style="color:${violColor}">${nViol}</strong></div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('detail-panel').classList.add('hidden')">✕ Fermer</button>
+      </div>
+      ${violLog}
+      <div class="detail-items" style="margin-top:${violLog?'14px':'0'}">
+        ${QCM.map((q,i)=>{
+          const ok=s.answers[i]===q.answer;
+          return`<div class="di">
+            <span class="di-num">${i+1}</span>
+            <span class="di-q"><strong>${q.part}</strong> — ${q.q.substring(0,65)}…<br>
+              <span style="color:${ok?'var(--success)':'var(--danger)'};font-size:11px">
+                ${ok?'✓ '+q.choices[q.answer]:'✗ '+(s.answers[i]>=0?q.choices[s.answers[i]]:'Sans réponse')+' → ✓ '+q.choices[q.answer]}
+              </span>
+            </span>
+            <span class="di-icon ${ok?'di-ok':'di-ko'}">${ok?'✓':'✗'}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    panel.scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){}
+}
+
+async function toggleQCM(){
+  const btn=document.getElementById('btn-toggle-qcm');
+  const badge=document.getElementById('qcm-status-badge');
+  try{
+    const r=await fetch('/api/config',{method:'PATCH',headers:{'Content-Type':'application/json','x-teacher-pwd':teacherPwd},body:JSON.stringify({active:!qcmActive})});
+    const d=await r.json();
+    qcmActive=d.active;
+    btn.textContent=qcmActive?'⏸ Désactiver le QCM':'▶ Activer le QCM';
+    badge.textContent=qcmActive?'Actif':'Désactivé';
+    badge.className='badge '+(qcmActive?'b-green':'b-red');
+  }catch(e){}
+}
+
+async function resetAll(){
+  if(!confirm('Supprimer toutes les sessions étudiants ? Cette action est irréversible.'))return;
+  try{
+    await fetch('/api/results',{method:'DELETE',headers:{'x-teacher-pwd':teacherPwd}});
+    refreshDash();
+    document.getElementById('detail-panel').classList.add('hidden');
+  }catch(e){}
+}
+
+// ── Changement mot de passe ──
+function showPwdPanel(){
+  document.getElementById('pwd-panel').classList.toggle('hidden');
+  document.getElementById('pwd-panel-err').classList.add('hidden');
+  document.getElementById('pwd-panel-ok').classList.add('hidden');
+}
+
+async function changePassword(){
+  const current=document.getElementById('pwd-current').value;
+  const newPwd=document.getElementById('pwd-new').value;
+  const confirm2=document.getElementById('pwd-confirm').value;
+  const errEl=document.getElementById('pwd-panel-err');
+  const okEl=document.getElementById('pwd-panel-ok');
+  errEl.classList.add('hidden'); okEl.classList.add('hidden');
+  if(current!==teacherPwd){showErr(errEl,'Mot de passe actuel incorrect.');return;}
+  if(newPwd.length<4){showErr(errEl,'Le nouveau mot de passe doit faire au moins 4 caractères.');return;}
+  if(newPwd!==confirm2){showErr(errEl,'Les deux nouveaux mots de passe ne correspondent pas.');return;}
+  try{
+    const r=await fetch('/api/config',{method:'PATCH',headers:{'Content-Type':'application/json','x-teacher-pwd':teacherPwd},
+      body:JSON.stringify({teacherPwd:newPwd})});
+    if(!r.ok){showErr(errEl,'Erreur serveur.');return;}
+    teacherPwd=newPwd;
+    okEl.textContent='Mot de passe changé avec succès.';
+    okEl.classList.remove('hidden');
+    document.getElementById('pwd-current').value='';
+    document.getElementById('pwd-new').value='';
+    document.getElementById('pwd-confirm').value='';
+  }catch(e){showErr(errEl,'Impossible de joindre le serveur.');}
+}
+
+function copyCSV(){
+  const txt=document.getElementById('csv-area').textContent;
+  navigator.clipboard&&navigator.clipboard.writeText(txt).then(()=>alert('CSV copié dans le presse-papiers.')).catch(()=>alert('Sélectionnez le texte manuellement.'));
+}
+
+function exportCSV(){
+  const txt=document.getElementById('csv-area').textContent;
+  if(txt==='Aucune donnée.')return;
+  const blob=new Blob(['\uFEFF'+txt],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='resultats_qcm_azure.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
